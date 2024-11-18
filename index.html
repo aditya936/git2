@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Dork URL Encoder</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fdf6e4; /* Light beige background */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            gap: 20px;
+            overflow-y: scroll; /* Allow scrolling */
+        }
+        h2 {
+            color: #f77f00; /* Bright orange header */
+            margin-bottom: 10px;
+        }
+        textarea {
+            width: 90%;
+            height: 40%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: both; /* Allows stretching */
+            margin-bottom: 15px;
+        }
+        #dorkInput {
+            background-color: #f0fff4; /* Light green for input */
+        }
+        #outputTextarea {
+            background-color: #ffedf0; /* Light pink for output */
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #f77f00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #d65d00;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        footer a {
+            color: #f77f00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>GitHub Dork URL Encoder</h2>
+
+    <textarea id="dorkInput" placeholder="Paste your dorks here..." oninput="enableShowButton()" style="width: 1097px; height: 235px;"></textarea>
+
+    <div class="button-container">
+        <button onclick="showOutput()" id="showButton" disabled>Show Output</button>
+        <button onclick="clearAll()">Clear</button>
+    </div>
+
+    <textarea id="outputTextarea" readonly placeholder="Generated URLs will appear here..." style="width: 1097px; height: 235px;"></textarea>
+
+    <footer>
+        <p>Visit my <a href="https://aditya936.github.io/git1/" target="_blank">GitHub Projects</a></p>
+        <p>Follow me on <a href="https://x.com/enterlectury" target="_blank">Twitter</a></p>
+    </footer>
+
+    <script>
+        // Enables the "Show Output" button when there's input
+        function enableShowButton() {
+            const input = document.getElementById("dorkInput").value.trim();
+            const showButton = document.getElementById("showButton");
+            showButton.disabled = input.length === 0; // Enable button only if input is not empty
+        }
+
+        // Displays the output in the output textarea
+        function showOutput() {
+            const input = document.getElementById("dorkInput").value.trim();
+            const outputTextarea = document.getElementById("outputTextarea");
+            const showButton = document.getElementById("showButton");
+
+            if (!input) {
+                alert("Please paste your dorks.");
+                return;
+            }
+
+            const dorks = input.split("\n");
+            const baseURL = "https://github.com/search?q=";
+            const urlType = "&type=code";
+
+            let output = "";
+            dorks.forEach(dork => {
+                const encodedDork = encodeURIComponent(dork);
+                output += `${baseURL}${encodedDork}${urlType}\n`;
+            });
+
+            outputTextarea.value = output;
+            outputTextarea.style.display = "block"; // Show output textarea
+            showButton.disabled = true; // Disable the button after clicking
+        }
+
+        // Clears the input and output fields
+        function clearAll() {
+            document.getElementById("dorkInput").value = "";
+            const outputTextarea = document.getElementById("outputTextarea");
+            outputTextarea.value = "";
+            outputTextarea.style.display = "none";
+            document.getElementById("showButton").disabled = true; // Disable button after clearing
+        }
+    </script>
+</body>
+</html>
